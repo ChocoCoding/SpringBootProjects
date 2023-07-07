@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
 	crossorigin="anonymous">
 <title>Inventario</title>
 </head>
@@ -26,10 +26,12 @@
 
 	<div class="container text-center">
 		<div>
-			<h1>Registrar de productos</h1>
+			<h1 th:if="${producto.id == null}">Registro de productos</h1>
+			<h1 th:unless="${producto.id == null}">Editar producto</h1>
 		</div>
 		<form th:action="@{/productos/guardar}" th:object="${producto}"
 			method="post" style="max-width: 600px; margin: 0 auto;">
+			<input type="hidden" th:field="*{id}" th:value="${producto.id}" />
 			<div class="m-3">
 				<div class="form-group row">
 					<label class="col-form-label col-sm-4">Nombre de producto:</label>
@@ -46,7 +48,8 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label class="col-form-label col-sm-4">Selecciona una categoria:</label>
+					<label class="col-form-label col-sm-4">Selecciona una
+						categoria:</label>
 					<div class="col-sm-8">
 						<select th:field="*{categoria}" class="form-control" required>
 							<th:block th:each="categoria:${listaCategorias}">
@@ -55,6 +58,59 @@
 						</select>
 					</div>
 				</div>
+				<!-- Cargamos los detalles en caso de que el producto ya este creado -->
+				<th:block th:unless="${producto.id == null}"
+					th:each="detalle,status: ${producto.detalles}">
+					<input type="hidden" name="detallesId" th:value="${detalle.id}" />
+					<div class="form-group row">
+						<label class="col-form-label col-sm-4">Detalles
+							#[[${status.count}]] : </label>
+						<div class="col-sm-4">
+							<input type="text" name="detallesNombre"
+								th:value="${detalle.nombre}" class="form-control" required>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" name="detallesValor"
+								th:value="${detalle.valor}" class="form-control" required>
+						</div>
+					</div>
+				</th:block>
+				<!-- Agregamos los detalles -->
+				<th:block th:if="${producto.id == null}">
+					<div class="form-group row">
+						<label class="col-form-label col-sm-4">Detalles #1</label>
+						<div class="col-sm-4">
+							<input type="text" name="detallesNombre" class="form-control"
+								placeholder="Nombre" required>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" name="detallesValor" class="form-control"
+								placeholder="Valor" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-sm-4">Detalles #2</label>
+						<div class="col-sm-4">
+							<input type="text" name="detallesNombre" class="form-control"
+								placeholder="Nombre" required>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" name="detallesValor" class="form-control"
+								placeholder="Valor" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-sm-4">Detalles #3</label>
+						<div class="col-sm-4">
+							<input type="text" name="detallesNombre" class="form-control"
+								placeholder="Nombre" required>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" name="detallesValor" class="form-control"
+								placeholder="Valor" required>
+						</div>
+					</div>
+				</th:block>
 				<div class="text-center p">
 					<button type="submit" class="btn btn-primary">Guardar</button>
 				</div>

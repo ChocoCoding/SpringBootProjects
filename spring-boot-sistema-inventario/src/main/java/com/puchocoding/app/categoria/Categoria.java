@@ -1,10 +1,14 @@
 package com.puchocoding.app.categoria;
 
+import com.puchocoding.app.marca.Marca;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Categoria {
@@ -15,6 +19,18 @@ public class Categoria {
 
 	@Column(length = 45, nullable = false, unique = true)
 	private String nombre;
+	
+	@ManyToOne
+	@JoinColumn(name = "marca_id")
+	private Marca marca;
+
+	public Marca getMarca() {
+		return marca;
+	}
+
+	public void setMarca(Marca marca) {
+		this.marca = marca;
+	}
 
 	public Integer getId() {
 		return id;
@@ -51,5 +67,25 @@ public class Categoria {
 		super();
 		this.nombre = nombre;
 	}
+
+	public Categoria(Integer id, String nombre, Marca marca) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.marca = marca;
+	}
+
+	public Categoria(String nombre, Marca marca) {
+		super();
+		this.nombre = nombre;
+		this.marca = marca;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
+	
 
 }

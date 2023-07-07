@@ -22,33 +22,31 @@
 
 	<div class="container text-center">
 		<div>
-			<h1>Bienvenido a la apliación de inventario</h1>
+			<h1>Lista de marcas</h1>
 		</div>
-		<div class="p-2">
-			<a class="h2" th:href="@{/categorias}">Lista de categorías</a>
+		<br>
+		<div>
+			<table class="table table-bordered">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Categorias</th>
+						<th scope="col">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="marca: ${listaMarcas}">
+						<td th:text=${marca.id}></td>
+						<td th:text="${marca.nombre}"></td>
+						<td th:text=${marca.categorias}></td>
+						<td>
+						<a th:href="@{'/marcas/editar'+'/'+${marca.id}}" class="btn btn-info">Editar</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div class="p-2">
-			<a class="h2" th:href="@{/categorias/nuevo}">Agregar categoría</a>
-		</div>
-		<div class="p-2">
-			<a class="h2" th:href="@{/productos}">Lista de productos</a>
-		</div>
-		<div class="p-2">
-			<a class="h2" th:href="@{/productos/nuevo}">Agregar producto</a>
-		</div>
-		<div class="p-2">
-		<a class="h2" th:href="@{/marcas}">Lista de marcas</a>
-	</div>
-	<div class="p-2">
-		<a class="h2" th:href="@{/marcas/nueva}">Agregar marca</a>
-	</div>
-			<div class="p-2">
-		<a class="h2" th:href="@{/usuarios}">Lista de usuarios</a>
-	</div>
-	<div class="p-2">
-		<a class="h2" th:href="@{/usuarios/nuevo}">Agregar usuario</a>
-	</div>
-	</div>
 	</div>
 </body>
 </html>

@@ -1,7 +1,11 @@
 package com.puchocoding.app.producto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.puchocoding.app.categoria.Categoria;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,13 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Producto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Id;
+	private Integer id;
 	
 	@Column(length = 128, nullable = false, unique = true)
 	private String nombre;
@@ -25,13 +30,17 @@ public class Producto {
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
+	
+	
+	@OneToMany(mappedBy = "producto",cascade = CascadeType.ALL)
+	private List<ProductoDetalles> detalles = new ArrayList<>();
 
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getNombre() {
@@ -57,10 +66,14 @@ public class Producto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+	
+	public void setDetalle(Integer id, String nombre, String valor) {
+		this.detalles.add(new ProductoDetalles(id,nombre,valor,this));
+	}
 
 	public Producto(Integer id, String nombre, float precio, Categoria categoria) {
 		super();
-		Id = id;
+		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.categoria = categoria;
@@ -81,6 +94,18 @@ public class Producto {
 		super();
 		this.nombre = nombre;
 	}
+
+	public List<ProductoDetalles> getDetalles() {
+		return detalles;
+	}
+
+	public void setDetalles(List<ProductoDetalles> detalles) {
+		this.detalles = detalles;
+	}
 	
+	//Metodo añadir detalles del producto
+	public void anhadirDetalles(String nombre, String valor) {
+		this.detalles.add(new ProductoDetalles(nombre,valor,this));
+	}
 	
 }
